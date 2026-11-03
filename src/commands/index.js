@@ -2,10 +2,12 @@
 const botCmds = require('./bot');
 const aiCmds = require('./ai');
 const downloaderCmds = require('./downloader');
+const ttsearchCmds = require('./ttsearch');
+const channelReactCmds = require('./channelReact');
 const funCmds = require('./fun');
 const utilityCmds = require('./utility');
 
-const handlers = [botCmds, aiCmds, downloaderCmds, funCmds, utilityCmds];
+const handlers = [botCmds, aiCmds, downloaderCmds, ttsearchCmds, channelReactCmds, funCmds, utilityCmds];
 
 async function dispatch(ctx) {
   for (const h of handlers) {
