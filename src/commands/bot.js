@@ -40,7 +40,7 @@ async function handle(ctx) {
   }
   if (cmd === 'features') {
     await sock.sendMessage(jid, { text:
-      `✨ *${config.BOT_NAME} — ALL COMMANDS (35+)*\n\n*Bot:* ${P}menu, ${P}alive, ${P}ping, ${P}owner, ${P}channel, ${P}help, ${P}uptime, ${P}features, ${P}license, ${P}checklicense, ${P}imageurl\n*AI:* ${P}ai, ${P}aion, ${P}aioff\n*Download:* ${P}song, ${P}video, ${P}apk\n*Fake Hack Prank:* ${P}hack, ${P}fakehack\n*Fun:* ${P}joke, ${P}fact, ${P}quote, ${P}8ball, ${P}dice, ${P}coin, ${P}dog, ${P}cat, ${P}qr\n*Utility:* ${P}time, ${P}date, ${P}calc, ${P}weather, ${P}translate, ${P}define, ${P}crypto\n*Auto:* Auto React, Status Seen, Channel Auto React, Auto AI (owner)\n\nPoori list ke liye ${P}menu likho.` });
+      `✨ *${config.BOT_NAME} — ALL COMMANDS (35+)*\n\n*Bot:* ${P}menu, ${P}alive, ${P}ping, ${P}owner, ${P}channel, ${P}help, ${P}uptime, ${P}features, ${P}license, ${P}checklicense, ${P}imageurl\n*AI:* ${P}ai, ${P}aion, ${P}aioff\n*Download:* ${P}song, ${P}video, ${P}apk, ${P}ttsearch\n*Channel:* ${P}chreact (owner, apna channel)\n*Fake Hack Prank:* ${P}hack, ${P}fakehack\n*Fun:* ${P}joke, ${P}fact, ${P}quote, ${P}8ball, ${P}dice, ${P}coin, ${P}dog, ${P}cat, ${P}qr\n*Utility:* ${P}time, ${P}date, ${P}calc, ${P}weather, ${P}translate, ${P}define, ${P}crypto\n*Auto:* Auto React, Status Seen, Channel Auto React, Auto AI (owner)\n\nPoori list ke liye ${P}menu likho.` });
     return true;
   }
   if (cmd === 'license') {
