@@ -40,8 +40,9 @@ app.post('/api/pair', async (req, res) => {
     pairInFlight = startBot(number);
     await pairInFlight;
     pairInFlight = null;
-    // Slow network (H+/2G) par code late aata hai, is liye 20 second tak wait karo.
-    for (let i = 0; i < 40 && !state.lastPairingCode && state.botStatus === 'waiting-pairing' && !state.pairingError; i++) {
+    // Slow network par code late aata hai, aur code milne se pehle
+    // band hone par retry hota hai, is liye 20 second tak wait karo.
+    for (let i = 0; i < 40 && !state.lastPairingCode && state.botStatus === 'waiting-pairing' && (!state.pairingError || state.pairingRetrying); i++) {
       await new Promise((r) => setTimeout(r, 500));
     }
     if (state.pairingError) return res.status(500).json({ ok: false, error: state.pairingError });
