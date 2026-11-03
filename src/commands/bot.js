@@ -2,6 +2,7 @@
 const fs = require('fs');
 const config = require('../config');
 const state = require('../state');
+const { title } = require('../stylish');
 const { getMenuText } = require('../menu');
 const { sendMenuImage, aliveSongPath } = require('../images');
 const { isOwner } = require('../license');
@@ -16,19 +17,19 @@ async function handle(ctx) {
     return true;
   }
   if (cmd === 'alive') {
-    const aliveText = `*${config.BOT_NAME} is ALIVE* ⚡🔥\n\nOwner: AQDAS HACKER\nWeb: aqdashacker.web.app\nChannel: ${config.CHANNEL_URL}\n\nType ${P}menu for all commands.`;
+    const aliveText = `*${title(config.BOT_NAME)} ${title('is Alive')}* ⚡🔥\n\n${title('Owner')}: ${title('Aqdas Hacker')}\nWeb: aqdashacker.web.app\nChannel: ${config.CHANNEL_URL}\n\nType ${P}menu for all commands.`;
     await sendMenuImage(sock, jid, aliveText);
     const song = aliveSongPath();
     if (song) await sock.sendMessage(jid, { audio: fs.readFileSync(song), mimetype: 'audio/mpeg' });
     return true;
   }
-  if (cmd === 'ping') { await sock.sendMessage(jid, { text: 'Pong! 🏓\nAQDAS HACKER MD BOT is live.' }); return true; }
+  if (cmd === 'ping') { await sock.sendMessage(jid, { text: `${title('Pong')}! 🏓\n${title('Aqdas Hacker MD Bot is live.')}` }); return true; }
   if (cmd === 'owner') {
-    await sock.sendMessage(jid, { text: '*Owner:* AQDAS HACKER\n*Bot:* AQDAS HACKER MD BOT\n*Number:* https://wa.me/' + config.OWNER_NUMBER + '\n*Web:* aqdashacker.web.app\n*Channel:* ' + config.CHANNEL_URL });
+    await sock.sendMessage(jid, { text: `*${title('Owner')}:* ${title('Aqdas Hacker')}\n*${title('Bot')}:* ${title('Aqdas Hacker MD Bot')}\n*${title('Number')}:* https://wa.me/` + config.OWNER_NUMBER + '\n*Web:* aqdashacker.web.app\n*Channel:* ' + config.CHANNEL_URL });
     return true;
   }
   if (cmd === 'channel') {
-    await sock.sendMessage(jid, { text: '📢 *AQDAS HACKER WhatsApp Channel*\n\n' + config.CHANNEL_URL + '\n\nChannel ko follow karo, naye updates ke liye.' });
+    await sock.sendMessage(jid, { text: `📢 *${title('Aqdas Hacker WhatsApp Channel')}*\n\n` + config.CHANNEL_URL + '\n\nChannel ko follow karo, naye updates ke liye.' });
     return true;
   }
   if (cmd === 'uptime') {
