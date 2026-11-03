@@ -20,6 +20,8 @@ const getMenuText = () => `╭━━━〔 ${title(BOT_NAME)} 〕━━━╮
 ╭━━━〔 ⬇️ *${title('Downloader')}* 〕━━━╮
 ┃ ${PREFIX}song <naam/link> — Image ke sath pooche ga: MP3 ya Video?
 ┃ ${PREFIX}video <naam/link> — Video download link
+┃ ${PREFIX}ttsearch <naam> — TikTok search, carousel se Video/Audio lo
+┃ ${PREFIX}chreact <emoji> <post link> — Channel post par react (owner, apna channel)
 ┃ ${PREFIX}apk <app naam> — APK / Play Store link
 ╰━━━━━━━━━━━━━━━━━━╯
 
