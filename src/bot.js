@@ -93,7 +93,10 @@ async function startBot(phoneNumber, opts = {}) {
       auth: authState,
       printQRInTerminal: false,
       logger: pino({ level: 'silent' }),
-      browser: Browsers.ubuntu('Chrome'),
+      // Baileys 7 test: macOS Desktop browser string. Ubuntu/Chrome wale
+      // build se bhi 401 aaya tha, is liye ye test build alag string
+      // use karta hai taake WhatsApp ko normal desktop jaisa lage.
+      browser: Browsers.macOS('Desktop'),
       connectTimeoutMs: 120000,
       defaultQueryTimeoutMs: 120000,
       keepAliveIntervalMs: 30000,
