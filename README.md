@@ -118,6 +118,29 @@ Vercel steps: GitHub repo ko https://vercel.com par import karo → Deploy dabao
 - Railway free plan ki limit hoti hai, bot 24/7 guarantee nahi hai.
 - `OWNER_NUMBER` environment variable Railway me set karo (sirf digits) taake sirf tum `.aion` kar sako. Is code me owner number pehle se set hai, env var se badla ja sakta hai.
 
+## Multiple accounts (ek se zyada number)
+
+Ek bot process = ek WhatsApp account. Ek hi process mein do number link nahi hote — WhatsApp ka linked-device system ek account ke liye hota hai. Doosra account chalana ho to doosra process chalao, apna session folder aur port alag rakho:
+
+```
+# Pehla account (Termux session 1)
+npm start
+
+# Doosra account (Termux session 2, alag folder/session)
+SESSION_DIR=session2 PORT=3001 BOT_LABEL="AQDAS HACKER 2" npm start
+```
+
+Doosre account ki pairing website `http://localhost:3001` par khulegi. Har account ka `session/` / `session2/` folder alag rahega, ek ka session doosre ko kharab nahi karega. Ek hi folder mein do dafa `npm start` mat chalao — do process ek hi session par ladenge aur code badalta rahega (408/401/428).
+
+## Pairing fail ho to (408 / 401 / 428)
+
+- **408/428:** Connection WhatsApp se band ho gaya, aksar slow network (H+/2G) ya socket band hone se. WiFi / strong 4G par try karo.
+- **401:** WhatsApp ne code reject kiya. Aksar wajah: website wala number aur WhatsApp profile wala number same nahi hai, code purana ho gaya hai, ya bar bar code mangwane par WhatsApp ne temporarily rok diya hai.
+- Button **ek dafa** dabao. Code milte hi 10-15 second mein likho. Dobara button dabane se code badal jayega.
+- Ek hi waqt mein ek hi `npm start` chalao. Do process chal rahe hon to Termux band kar ke dobara kholo, phir `rm -rf session` kar ke ek dafa start karo.
+- WhatsApp Settings > profile mein number check karo, website wale number se digit by digit milao. Linked Devices mein purani devices remove karo. WhatsApp update karo.
+- Bar bar fail ho to 30-60 minute ruk jao, phir ek dafa try karo.
+
 ## Apni image / song lagana
 
 - Menu/Alive image: `assets/menu.jpg` — pehle se aapki image lagi hui hai.
