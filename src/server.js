@@ -23,9 +23,14 @@ app.post('/api/pair', async (req, res) => {
   const number = cleanNumber(req.body && req.body.number);
   if (!isValidNumber(number)) return res.status(400).json({ ok: false, error: 'Sahi number likho: country code ke sath, sirf digits. Example: 923001234567' });
   if (state.botStatus === 'online' && state.lastNumber === number) return res.json({ ok: true, status: 'online', message: 'Bot pehle se online hai.' });
+  // Code abhi bana hua hai to wahi code wapas do, naya code mat banao.
+  if (state.botStatus === 'waiting-pairing' && state.lastNumber === number && state.lastPairingCode && state.pairingStartedAt && Date.now() - state.pairingStartedAt < 90000) {
+    return res.json({ ok: true, status: state.botStatus, code: state.lastPairingCode, number });
+  }
   try {
     await startBot(number);
-    for (let i = 0; i < 10 && !state.lastPairingCode && state.botStatus === 'waiting-pairing' && !state.pairingError; i++) {
+    // Slow network (H+/2G) par code late aata hai, is liye 20 second tak wait karo.
+    for (let i = 0; i < 40 && !state.lastPairingCode && state.botStatus === 'waiting-pairing' && !state.pairingError; i++) {
       await new Promise((r) => setTimeout(r, 500));
     }
     if (state.pairingError) return res.status(500).json({ ok: false, error: state.pairingError });
