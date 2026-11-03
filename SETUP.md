@@ -1,6 +1,8 @@
-# 𝐀𝐐𝐃𝐀𝐒 𝐇𝐀𝐂𝐊𝐄𝐑 𝐌𝐃 𝐁𝐎𝐓 — 𝐅𝐔𝐋𝐋 𝐒𝐄𝐓𝐔𝐏
+# 𝐀𝐐𝐃𝐀𝐒 𝐇𝐀𝐂𝐊𝐄𝐑 𝐌𝐃 𝐁𝐎𝐓 — 𝐅𝐔𝐋𝐋 𝐒𝐄𝐓𝐔𝐏 (𝐓𝐞𝐫𝐦𝐮𝐱)
 
 > 𝐄𝐱𝐭𝐫𝐚 𝐧𝐮𝐦𝐛𝐞𝐫 𝐮𝐬𝐞 𝐤𝐚𝐫𝐨, 𝐦𝐚𝐢𝐧 𝐧𝐮𝐦𝐛𝐞𝐫 𝐧𝐚𝐡𝐢. 𝐔𝐧𝐨𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐛𝐨𝐭 𝐬𝐞 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐚𝐧 𝐡𝐨 𝐬𝐚𝐤𝐭𝐚 𝐡𝐚𝐢.
+>
+> Ye file hi Termux setup hai. Phone par yehi steps follow karo, computer ki zaroorat nahi.
 
 ## 1. 𝐓𝐞𝐫𝐦𝐮𝐱 𝐈𝐧𝐬𝐭𝐚𝐥𝐥 𝐊𝐚𝐫𝐨
 
@@ -27,15 +29,9 @@ git clone --depth 1 https://github.com/teamhussain59-collab/aqdashacker-md.git a
 cd ~/aqdas-hacker-md
 ```
 
-Update karna ho to, purana bot band kar ke:
-
-```
-pkill node
-cd ~/aqdas-hacker-md
-git pull
-```
-
 ## 4. 𝐈𝐧𝐬𝐭𝐚𝐥𝐥 𝐀𝐮𝐫 𝐒𝐭𝐚𝐫𝐭
+
+Pehli dafa, ya fresh pairing karni ho to session delete karo:
 
 ```
 rm -rf session
@@ -43,7 +39,11 @@ npm install --allow-git=all
 npm start
 ```
 
-Agar `npm install` par git wali error aaye to wahi `--allow-git=all` wali line dobara likho.
+Agar `npm install` par git wali error (`EALLOWGIT`) aaye to wahi `--allow-git=all` wali line dobara likho. Agar install beech mein ruke ya package wali error aaye to ye try karo:
+
+```
+npm install --allow-git=all --ignore-scripts
+```
 
 Bot chalne par ye dikhe ga:
 
@@ -57,12 +57,27 @@ AQDAS HACKER MD BOT website running on port 3000
 2. Number is tarteeb se likho: country code ke sath, `+` mat likho, aur 92 ke baad pehla `0` mat likho.
    - Sahi: `92` + `3xx...` (0 hata kar)
    - Ghalat: `9203xx...`, `+92...`, `030...`
-3. **PAIRING CODE LO** button **ek dafa** dabao.
+3. **PAIRING CODE LO** button **ek dafa** dabao. Dobara dabane se naya code ban jata hai aur purana code bekar ho jata hai.
 4. Code milte hi **10-15 second** mein WhatsApp mein likho:
    WhatsApp > Settings > Linked Devices > Link a Device > Link with phone number instead.
 5. **Number check:** Website wala number aur WhatsApp profile wala number digit by digit same hona chahiye. Profile dekhne ke liye WhatsApp Settings mein apni photo par tap karo. Number mujhe mat bhejo, khud milao.
+6. Termux ko foreground mein rakho, phone lock mat karo, WiFi par try karo. Slow H+ network par code late aata hai aur expire ho jata hai.
 
-Agar WhatsApp kahe **"Couldn't link device. Check the phone number is correct"** to matlab number same nahi hai. Naya code mangwane se kuch nahi hoga, pehle number theek karo.
+### Control test — number ka masla hai ya bot ka?
+
+Agar bot ka code bar bar reject ho to pehle official test karo:
+
+1. Chrome mein `web.whatsapp.com` kholo, **Link with phone number** dabao, wahi number likho, code WhatsApp mein likho.
+2. Agar wahan link ho jaye aur bot par na ho, to number aur account theek hain, WhatsApp bot (Baileys) ko rok raha hai.
+3. Agar wahan bhi wahi error aaye, to number/account ka masla hai.
+
+### Agar code reject ho jaye to ruk jao
+
+Bar bar code mangne se rok khatam nahi hoti, ulta lambi ho jati hai. Aik din mein boht dafa try karne ke baad WhatsApp unofficial linking ko temporarily rok deta hai. Us waqt:
+
+- Aaj aur code mat mango.
+- Kal dusre extra number se, WiFi par, aik dafa try karo.
+- Linked Devices mein purani, istemal na hone wali devices remove kar do.
 
 ## 6. 𝐁𝐨𝐭 𝐓𝐞𝐬𝐭 𝐊𝐚𝐫𝐨
 
@@ -72,11 +87,40 @@ Link hote hi bot wale number par, ya kisi dusre number se bot ko ye bhejo:
 .menu
 .alive
 .ping
+.ttsearch funny cat
 ```
 
-`.menu` par stylish menu aur image aani chahiye. `.alive` par song aana chahiye.
+`.menu` par stylish menu aur image aani chahiye. `.alive` par song aana chahiye. `.ttsearch` par TikTok ke 5 results carousel mein aane chahiye, button se Video ya Audio milna chahiye.
 
-## 7. 𝐑𝐨𝐳𝐚𝐧𝐚 𝐔𝐬𝐞
+Channel react (sirf owner, sirf apna channel):
+
+```
+.chreact 🤫,🤗 https://whatsapp.com/channel/0029Vb9FRVV8F2pDezlyrD0q/1917
+```
+
+Ya sirf post number:
+
+```
+.chreact 🤫 1917
+```
+
+Vote ke liye abhi koi API endpoint nahi hai, is liye `.chvote` sirf ye batata hai. Vote wala API link milne par add hoga.
+
+## 7. 𝐔𝐩𝐝𝐚𝐭𝐞 𝐊𝐚𝐫𝐧𝐚 𝐇𝐨 𝐓𝐨
+
+Bot pehle se linked hai aur sirf naya version chahiye to session **delete mat karo**, warna dobara pairing karni pare gi:
+
+```
+pkill node
+cd ~/aqdas-hacker-md
+git pull
+npm install --allow-git=all
+npm start
+```
+
+Fresh pairing karni ho to hi `rm -rf session` likho, phir section 4 aur 5 dobara karo.
+
+## 8. 𝐑𝐨𝐳𝐚𝐧𝐚 𝐔𝐬𝐞
 
 - Termux band ho jaye, phone restart ho jaye, ya battery optimization bot ko rok de to dobara sirf ye likho, dobara pairing nahi karni pare gi jab tak session folder maujood hai:
 
@@ -98,16 +142,35 @@ SESSION_DIR=session2 PORT=3001 npm start
 
 Us ki website `http://localhost:3001` par khulegi.
 
+## 𝐁𝐚𝐢𝐥𝐞𝐲𝐬 𝟕 𝐓𝐞𝐬𝐭 𝐁𝐮𝐢𝐥𝐝 (𝐚𝐠𝐚𝐫 𝐁𝐚𝐢𝐥𝐞𝐲𝐬 𝟔 𝐬𝐞 𝐥𝐢𝐧𝐤 𝐧𝐚 𝐡𝐨)
+
+Ye test build alag branch aur alag folder mein hai, main bot ko overwrite nahi karti:
+
+```
+pkill node
+cd ~
+rm -rf aqdas-hacker-md-b7
+git clone --depth 1 -b baileys7-test https://github.com/teamhussain59-collab/aqdashacker-md.git aqdas-hacker-md-b7
+cd ~/aqdas-hacker-md-b7
+rm -rf session
+npm install
+PORT=3001 npm start
+```
+
+Website: `http://localhost:3001`. Agar is se bhi wahi 401/428 aaye to section 5 wala rukne aur dusre number wala tareeqa follow karo, dobara code mat mango.
+
 ## 𝐌𝐚𝐬𝐥𝐞 𝐀𝐮𝐫 𝐇𝐚𝐥
 
 | Masla | Hal |
 |---|---|
-| `Closed, reason: 428 / 408` | Connection band ho gaya. WiFi par try karo, Termux foreground mein rakho, phone lock mat karo. |
-| `Closed, reason: 401` | WhatsApp ne reject kiya. Number check karo, bar bar code mat mango, kuch der ruk kar try karo. |
-| `Couldn't link device` | Number same nahi hai. Upar wala number check dobara karo. |
+| `Closed, reason: 428` | Connection band ho gaya (connectionClosed). WiFi par try karo, Termux foreground mein rakho. |
+| `Closed, reason: 408` | Connection timeout / lost. Slow network. WiFi par, aik dafa try karo. |
+| `Closed, reason: 401` | WhatsApp server ne reject kiya (loggedOut). Number check karo, official control test karo, bar bar code mat mango, kal dusre number se try karo. |
+| `Couldn't link device` | Ye message number ghalat hone par bhi aata hai aur code expire / unofficial linking rokne par bhi. Sirf number theek hona kafi nahi, code taaza aur foran likhna zaroori hai. |
 | Clone beech mein toote | `git clone --depth 1 ...` use karo, WiFi par dobara try karo. |
 | `EALLOWGIT` | `npm install --allow-git=all` likho. |
 | Code late aaye | Slow network. WiFi par try karo, code milte hi foran likho. |
+| Install-scripts warning | Normal warning hai, bot phir bhi chalta hai. |
 
 ## 𝐒𝐭𝐲𝐥𝐢𝐬𝐡 𝐖𝐫𝐢𝐭𝐢𝐧𝐠
 
@@ -118,3 +181,4 @@ Bot ke menu aur `.alive`, `.ping`, `.owner`, `.channel` jawab stylish bold writi
 - Pairing code kisi ko mat do, screenshot mein mat dikhao.
 - GitHub token chat mein mat bhejo. Token dikh jaye to foran GitHub Settings se delete/revoke karo.
 - Vercel par sirf website chalegi, live bot nahi. Live bot ke liye Railway, Render ya Termux chahiye.
+- `.chreact` wale react third-party API ki queue se lagte hain, apne WhatsApp account se nahi. WhatsApp isko hata bhi sakta hai.
