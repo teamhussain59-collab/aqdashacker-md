@@ -8,6 +8,7 @@ const { cleanNumber, isValidNumber } = require('./utils');
 const { startBot } = require('./bot');
 
 const app = express();
+let pairInFlight = null;
 app.use(express.json());
 app.use(express.static(path.join(config.ROOT, 'public')));
 app.use('/assets', express.static(path.join(config.ROOT, 'assets')));
@@ -16,6 +17,7 @@ app.get('/api/status', (req, res) => res.json({
   bot: config.BOT_NAME, version: config.BOT_VERSION,
   licensedTo: config.LICENSED_TO, licenseType: config.LICENSE_TYPE,
   status: state.botStatus, number: state.lastNumber, error: state.pairingError,
+  session: config.SESSION_DIR,
 }));
 
 app.post('/api/pair', async (req, res) => {
@@ -27,8 +29,17 @@ app.post('/api/pair', async (req, res) => {
   if (state.botStatus === 'waiting-pairing' && state.lastNumber === number && state.lastPairingCode && state.pairingStartedAt && Date.now() - state.pairingStartedAt < 90000) {
     return res.json({ ok: true, status: state.botStatus, code: state.lastPairingCode, number });
   }
+  // Pairing pehle se chal rahi hai to dusri request se naya socket mat banao.
+  if (pairInFlight) {
+    try { await pairInFlight; } catch {}
+    if (state.lastPairingCode && state.lastNumber === number) {
+      return res.json({ ok: true, status: state.botStatus, code: state.lastPairingCode, number });
+    }
+  }
   try {
-    await startBot(number);
+    pairInFlight = startBot(number);
+    await pairInFlight;
+    pairInFlight = null;
     // Slow network (H+/2G) par code late aata hai, is liye 20 second tak wait karo.
     for (let i = 0; i < 40 && !state.lastPairingCode && state.botStatus === 'waiting-pairing' && !state.pairingError; i++) {
       await new Promise((r) => setTimeout(r, 500));
@@ -37,6 +48,7 @@ app.post('/api/pair', async (req, res) => {
     if (state.lastPairingCode) return res.json({ ok: true, status: state.botStatus, code: state.lastPairingCode, number });
     return res.json({ ok: true, status: state.botStatus, message: 'Pairing shuru ho gaya, status check karo.' });
   } catch (err) {
+    pairInFlight = null;
     state.botStatus = 'offline';
     return res.status(500).json({ ok: false, error: err.message || String(err) });
   }
