@@ -1,28 +1,29 @@
 // Stylish menu — ek hi jagah se banta hai, .menu aur .features dono use karte hain.
 const config = require('./config');
+const { title } = require('./stylish');
 const { PREFIX, BOT_NAME, BOT_VERSION, OWNER_NUMBER, CHANNEL_URL } = config;
 
-const getMenuText = () => `╭━━━〔 *${BOT_NAME}* 〕━━━╮
-┃ ⚡ *OWNER:* AQDAS HACKER
+const getMenuText = () => `╭━━━〔 ${title(BOT_NAME)} 〕━━━╮
+┃ ⚡ *OWNER:* ${title('Aqdas Hacker')}
 ┃ 📞 *OWNER:* https://wa.me/${OWNER_NUMBER}
 ┃ 🔥 *PREFIX:* ${PREFIX}
 ┃ 🌐 *WEB:* aqdashacker.web.app
 ┃ 📢 *CHANNEL:* ${CHANNEL_URL}
-┃ ✅ *STATUS:* ONLINE
+┃ ✅ *STATUS:* ${title('Online')}
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 🤖 *AI & CHAT* 〕━━━╮
+╭━━━〔 🤖 *${title('AI & Chat')}* 〕━━━╮
 ┃ ${PREFIX}ai <sawal> — AI se baat karo
 ┃ ${PREFIX}aion / ${PREFIX}aioff — Auto AI reply ON/OFF (owner)
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 ⬇️ *DOWNLOADER* 〕━━━╮
+╭━━━〔 ⬇️ *${title('Downloader')}* 〕━━━╮
 ┃ ${PREFIX}song <naam/link> — Image ke sath pooche ga: MP3 ya Video?
 ┃ ${PREFIX}video <naam/link> — Video download link
 ┃ ${PREFIX}apk <app naam> — APK / Play Store link
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 ⚡ *BOT* 〕━━━╮
+╭━━━〔 ⚡ *${title('Bot')}* 〕━━━╮
 ┃ ${PREFIX}menu — Ye stylish menu
 ┃ ${PREFIX}alive — Bot alive + song
 ┃ ${PREFIX}ping — Speed check
@@ -31,19 +32,19 @@ const getMenuText = () => `╭━━━〔 *${BOT_NAME}* 〕━━━╮
 ┃ ${PREFIX}help — Madad
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 ✨ *AUTO* 〕━━━╮
+╭━━━〔 ✨ *${title('Auto')}* 〕━━━╮
 ┃ Auto React: ON
 ┃ Status Seen: ON (status auto seen hota hai)
 ┃ Channel Auto React: ON (sirf linked/admin account ke channel par)
 ┃ Auto AI: owner ${PREFIX}aion se on kare
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 🎭 *FAKE HACK PRANK* 〕━━━╮
+╭━━━〔 🎭 *${title('Fake Hack Prank')}* 〕━━━╮
 ┃ ${PREFIX}hack <naam> — Fake hack prank, SIRF MAZAK
 ┃ Koi real hack nahi hota, koi data nahi liya jata
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 🎉 *FUN* 〕━━━╮
+╭━━━〔 🎉 *${title('Fun')}* 〕━━━╮
 ┃ ${PREFIX}joke — Mazahiya joke (free API)
 ┃ ${PREFIX}fact — Amazing fact (free API)
 ┃ ${PREFIX}quote — Motivation quote (free API)
@@ -54,7 +55,7 @@ const getMenuText = () => `╭━━━〔 *${BOT_NAME}* 〕━━━╮
 ┃ ${PREFIX}qr <text> — QR code image (free API)
 ╰━━━━━━━━━━━━━━━━━━╯
 
-╭━━━〔 🛠️ *UTILITY* 〕━━━╮
+╭━━━〔 🛠️ *${title('Utility')}* 〕━━━╮
 ┃ ${PREFIX}time / ${PREFIX}date — Waqt aur tareekh
 ┃ ${PREFIX}calc <hisab> — Masalan: ${PREFIX}calc 12*8+5
 ┃ ${PREFIX}weather <sheher> — Asal mausam (free API)
@@ -66,6 +67,6 @@ const getMenuText = () => `╭━━━〔 *${BOT_NAME}* 〕━━━╮
 ┃ ${PREFIX}license — Bot ki license info
 ┃ ${PREFIX}imageurl — Menu image ka URL
 ╰━━━━━━━━━━━━━━━━━━╯
-*${BOT_NAME} v${BOT_VERSION} — Free, Fast, Stylish* 🔥`;
+*${title(BOT_NAME)} v${BOT_VERSION} — Free, Fast, Stylish* 🔥`;
 
 module.exports = { getMenuText };
