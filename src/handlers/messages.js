@@ -31,9 +31,16 @@ async function handleMessages(sock, messages) {
         try { await sock.sendMessage(m.key.remoteJid, { react: { text: '🔥', key: m.key } }); } catch {}
       }
 
-      const text = m.message.conversation || m.message.extendedTextMessage?.text || '';
+      const text = m.message.conversation || m.message.extendedTextMessage?.text
+        || m.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson && (() => { try { return JSON.parse(m.message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson).id || ''; } catch { return ''; } })()
+        || m.message.interactiveResponseMessage?.body?.text
+        || m.message.buttonsResponseMessage?.selectedButtonId
+        || m.message.templateButtonReplyMessage?.selectedId
+        || m.message.listResponseMessage?.singleSelectReply?.selectedRowId
+        || '';
       const jid = m.key.remoteJid;
       const isGroup = jid.endsWith('@g.us');
+      const sender = m.key.participant || jid;
 
       // Song choice reply — command nahi, pending sawal ka jawab hai.
       if (!text.startsWith(config.PREFIX) && text.trim()) {
@@ -50,7 +57,7 @@ async function handleMessages(sock, messages) {
           continue;
         }
 
-        await dispatch({ sock, jid, cmd, arg, isGroup, state, config });
+        await dispatch({ sock, jid, cmd, arg, isGroup, state, config, msg: m, sender });
         continue;
       }
 
