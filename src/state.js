@@ -8,6 +8,7 @@ const state = {
   lastPairingCode: null,
   lastNumber: null,
   pairingError: null,
+  pairingStartedAt: 0,
   autoAi: false,
   channelAutoReact: process.env.CHANNEL_AUTO_REACT !== 'false',
   autoReact: true,
