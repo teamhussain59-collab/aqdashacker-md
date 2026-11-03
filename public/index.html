@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AQDAS HACKER MD BOT — Pairing</title>
+<style>
+body{margin:0;background:#050807;color:#eafff3;font-family:system-ui,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:16px}
+.card{width:100%;max-width:440px;background:#0b1512;border:1px solid #1ef08a55;border-radius:18px;padding:24px;box-shadow:0 0 40px #1ef08a22}
+h1{margin:0 0 4px;font-size:26px;letter-spacing:1px}
+h1 span{color:#1ef08a}
+p{color:#a9c9bb;line-height:1.5}
+input{width:100%;box-sizing:border-box;padding:14px;border-radius:12px;border:1px solid #2a4a3e;background:#07100d;color:#fff;font-size:17px;margin:10px 0}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:#1ef08a;color:#03110a;font-weight:800;font-size:17px;cursor:pointer}
+button:disabled{opacity:.6}
+.code{font-size:34px;letter-spacing:6px;text-align:center;background:#07100d;border:1px dashed #1ef08a;border-radius:12px;padding:16px;margin:14px 0;word-break:break-all}
+.status{margin-top:12px;font-size:14px;color:#a9c9bb}
+ol{color:#cfe8dc;line-height:1.6;padding-left:20px}
+.warn{background:#2a1300;border:1px solid #ff9d2e55;color:#ffd9a0;border-radius:10px;padding:10px;font-size:13px;line-height:1.5}
+small{color:#7fa396}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>AQDAS <span>HACKER</span> MD BOT</h1>
+<img src="/assets/menu.jpg" alt="AQDAS HACKER" style="width:100%;border-radius:14px;margin:10px 0">
+<p>Apna number likho, <b>Pairing Code</b> dabao, code milega. Real-time pairing — isi page par status dekho.</p>
+<input id="num" inputmode="numeric" placeholder="923001234567 — country code ke sath, + mat likho">
+<button id="btn" onclick="pair()">PAIRING CODE LO</button>
+<div id="out"></div>
+<div class="status" id="status">Status: offline</div>
+<h3>Code milne ke baad:</h3>
+<ol>
+<li>WhatsApp kholo &gt; Settings &gt; Linked Devices</li>
+<li>Link a Device &gt; <b>Link with phone number instead</b></li>
+<li>8 digit code likho, jaldi karo — code ki muddat khatam ho jati hai.</li>
+<li>Connect hote hi bot par <b>.menu</b> bhejo.</li>
+</ol>
+<div class="warn">⚠️ Extra number use karo, main number nahi. Unofficial WhatsApp bot se number ban ho sakta hai.</div>
+<p><small>Note: Vercel par sirf ye website chalegi, bot ka live connection nahi. Pairing aur bot ke liye Railway wali URL use karo.</small></p>
+<p><small>Features: Stylish Menu • Alive + Song • Song/Video Download Link • APK Search • Auto React • Status Seen • AI Chat / Auto AI • Fake Hack Prank • Joke/Fact/Quote • License • Vercel website only, bot Railway par</small></p>
+<p><a href="https://whatsapp.com/channel/0029Vb9FRVV8F2pDezlyrD0q" target="_blank" rel="noopener" style="color:#1ef08a">📢 WhatsApp Channel — Follow karo</a> • <a href="https://aqdashacker.web.app" target="_blank" rel="noopener" style="color:#1ef08a">aqdashacker.web.app</a></p>
+</div>
+<script>
+async function pair(){
+  const btn=document.getElementById('btn'), out=document.getElementById('out');
+  const number=document.getElementById('num').value.trim();
+  btn.disabled=true; btn.textContent='CODE BAN RAHA HAI...';
+  out.innerHTML='';
+  try{
+    const r=await fetch('/api/pair',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number})});
+    const d=await r.json();
+    if(!d.ok){ out.innerHTML='<p style="color:#ff8a8a">'+d.error+'</p>'; }
+    else if(d.code){ out.innerHTML='<div class="code">'+d.code+'</div><p>Ye code WhatsApp me likho. Status neeche check karte raho.</p>'; }
+    else { out.innerHTML='<p>'+(d.message||'Pairing shuru ho gaya.')+'</p>'; }
+  }catch(e){ out.innerHTML='<p style="color:#ff8a8a">Error: '+e.message+'</p>'; }
+  btn.disabled=false; btn.textContent='PAIRING CODE LO';
+}
+async function status(){
+  try{
+    const r=await fetch('/api/status'); const d=await r.json();
+    document.getElementById('status').textContent='Status: '+d.status+(d.number?' • '+d.number:'')+(d.error?' • '+d.error:'');
+  }catch{}
+}
+setInterval(status,3000); status();
+</script>
+</body>
+</html>
