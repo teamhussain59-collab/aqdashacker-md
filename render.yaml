@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: aqdas-hacker-md-bot
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /health
+    envVars:
+      - key: OWNER_NUMBER
+        value: "923194997157"
