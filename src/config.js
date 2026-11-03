@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   BOT_NAME: 'AQDAS HACKER MD BOT',
-  BOT_VERSION: '2.2.2',
+  BOT_VERSION: '2.3.0-test-baileys7',
   BOT_LABEL: process.env.BOT_LABEL || 'AQDAS HACKER MD BOT',
   PREFIX: '.',
   PORT: process.env.PORT || 3000,
