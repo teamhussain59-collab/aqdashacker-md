@@ -60,6 +60,14 @@ async function status(){
   try{
     const r=await fetch('/api/status'); const d=await r.json();
     document.getElementById('status').textContent='Status: '+d.status+(d.number?' • '+d.number:'')+(d.error?' • '+d.error:'');
+    // Code mar gaya ho (offline + error) to purana code hata do,
+    // warna user mara hua code likh kar reject ho jaye ga.
+    if(d.status==='offline' && d.error){
+      const out=document.getElementById('out');
+      if(out.querySelector('.code')){
+        out.innerHTML='<p style="color:#ff8a8a">⚠️ Upar wala code khatam ho gaya hai, usko mat likho. Dobara PAIRING CODE LO dabao aur taaza code foran likho.</p>';
+      }
+    }
   }catch{}
 }
 setInterval(status,3000); status();
