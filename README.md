@@ -91,6 +91,17 @@ Test karke add ki gayi hain, 3 Nov 2026 ko check hui thin. Koi API fail ho to co
 
 Vercel steps: GitHub repo ko https://vercel.com par import karo → Deploy dabao → website URL mil jayegi. Bot chalane ke liye phir bhi upar wale Railway steps use karo, wahi aapki pairing website hai.
 
+## Render par deploy — sab se asaan free cloud (lekin so jata hai)
+
+`render.yaml` pehle se add hai, is liye Render par GitHub repo chuno to settings khud bhar jayengi.
+
+1. https://render.com kholo, GitHub se login karo.
+2. New → Web Service → `teamhussain59-collab/aqdashacker-md` repo chuno.
+3. Plan **Free** rakho, Start Command `node index.js` hona chahiye.
+4. Deploy karo, Render URL milegi, us par pairing karo.
+
+**Limit saaf samajh lo:** Free web service 15 minute bina inbound traffic ke baad spin down ho jati hai aur dobara khulne mein lagbhag 1 minute lagta hai.【1217915744761685081†L10-L11】 File system bhi ephemeral hai, is liye spin down / redeploy par session khatam ho sakta hai aur dobara pairing karni pare gi. Bot ko hamesha online rakhne ke liye paid instance chahiye hota hai.
+
 ## Railway par deploy (free, phone se bhi ho sakta hai)
 
 1. GitHub par naya repo banao, is folder ki files upload karo. `session/` aur `node_modules/` upload mat karo.
