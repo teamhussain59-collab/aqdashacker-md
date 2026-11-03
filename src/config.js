@@ -3,9 +3,13 @@ const path = require('path');
 
 module.exports = {
   BOT_NAME: 'AQDAS HACKER MD BOT',
-  BOT_VERSION: '2.2.0',
+  BOT_VERSION: '2.2.1',
+  BOT_LABEL: process.env.BOT_LABEL || 'AQDAS HACKER MD BOT',
   PREFIX: '.',
   PORT: process.env.PORT || 3000,
+  // Multi-account: har account ka apna session folder.
+  // Dusra account: SESSION_DIR=session2 PORT=3001 npm start
+  SESSION_DIR: process.env.SESSION_DIR || 'session',
   OWNER_NUMBER: process.env.OWNER_NUMBER || '923194997157',
   CHANNEL_URL: 'https://whatsapp.com/channel/0029Vb9FRVV8F2pDezlyrD0q',
   CHANNEL_JID: process.env.CHANNEL_JID || '',
@@ -21,4 +25,5 @@ module.exports = {
     .map((s) => s.replace(/[^0-9]/g, ''))
     .filter(Boolean),
   ROOT: path.join(__dirname, '..'),
+  get SESSION_PATH() { return path.join(this.ROOT, this.SESSION_DIR); },
 };
