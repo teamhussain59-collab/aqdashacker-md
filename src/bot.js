@@ -11,9 +11,16 @@
 //    NAHI hota jab tak pehle se paired session logout na ho.
 // 4) Slow network par history sync timeout (408) se bachne ke liye
 //    syncFullHistory band hai aur timeouts 60s hain.
-// Baileys 6.7.24 (legacy stable) pin hai. 7.0.0-rc14 release
-// candidate hai, is liye upgrade NAHI kiya — usme breaking changes
-// aur Termux/ARM par rust-bridge ka risk hai.
+// v2.2.2 (3 Nov 2026) — screenshot se naya saboot: code milne ke
+// baad bhi socket 428/408 par band ho raha tha, aur code milne se
+// pehle bhi socket band ho raha tha. Iska matlab connection WhatsApp
+// se hi nahi tik raha (H+ slow network). Is liye:
+// - Browser string custom naam se standard Ubuntu/Chrome kar diya,
+//   taake WhatsApp ko normal Chrome jaisa lage.
+// - Timeouts 60s se 120s kar diye.
+// - Agar code milne SE PEHLE socket band ho jaye to 8 second baad
+//   khud 2 dafa dobara koshish hogi. Code milne KE BAAD restart
+//   NAHI hoga, taake code invalid na ho.
 const path = require('path');
 const fs = require('fs');
 const pino = require('pino');
@@ -22,6 +29,7 @@ const {
   useMultiFileAuthState,
   DisconnectReason,
   fetchLatestBaileysVersion,
+  Browsers,
 } = require('@whiskeysockets/baileys');
 const config = require('./config');
 const state = require('./state');
@@ -38,6 +46,8 @@ function clearReconnectTimer() {
 
 async function startBot(phoneNumber, opts = {}) {
   const force = Boolean(opts.force);
+  const retryCount = Number(opts.retryCount || 0);
+  let codeIssued = false;
   // Wahi code abhi fresh hai to dobara socket mat banao.
   if (
     !force &&
@@ -67,6 +77,7 @@ async function startBot(phoneNumber, opts = {}) {
     }
     state.botStatus = 'waiting-pairing';
     state.pairingError = null;
+    state.pairingRetrying = false;
     state.lastNumber = phoneNumber;
     state.lastPairingCode = null;
     state.pairingStartedAt = Date.now();
@@ -82,9 +93,9 @@ async function startBot(phoneNumber, opts = {}) {
       auth: authState,
       printQRInTerminal: false,
       logger: pino({ level: 'silent' }),
-      browser: [config.BOT_LABEL, 'Chrome', '1.0.0'],
-      connectTimeoutMs: 60000,
-      defaultQueryTimeoutMs: 60000,
+      browser: Browsers.ubuntu('Chrome'),
+      connectTimeoutMs: 120000,
+      defaultQueryTimeoutMs: 120000,
       keepAliveIntervalMs: 30000,
       syncFullHistory: false,
       markOnlineOnConnect: false,
@@ -111,11 +122,21 @@ async function startBot(phoneNumber, opts = {}) {
         const reason = lastDisconnect?.error?.output?.statusCode;
         state.botStatus = 'offline';
         console.log('Closed, reason:', reason, 'registered:', wasRegistered);
-        // Pairing abhi hui hi nahi: restart mat karo, code wahi rehne do
-        // jab tak user dobara button na dabaye. Session bhi mat delete karo.
+        // Pairing abhi hui hi nahi: code milne se pehle band hua ho
+        // to khud dobara koshish karo; code mil gaya ho to mat karo.
         if (!wasRegistered) {
           state.lastPairingCode = null;
-          state.pairingError = 'Connection band ho gaya (reason ' + reason + '). Dobara Pairing Code dabao, WiFi par, aur code foran likho.';
+          if (!codeIssued && retryCount < 2) {
+            state.botStatus = 'waiting-pairing';
+            state.pairingRetrying = true;
+            state.pairingError = 'Connection band ho gaya (reason ' + reason + '). 8 second mein dobara koshish ho rahi hai, WiFi par raho.';
+            console.log('Pairing retry', retryCount + 1, 'in 8s, reason:', reason);
+            clearReconnectTimer();
+            reconnectTimer = setTimeout(() => startBot(phoneNumber, { force: true, retryCount: retryCount + 1 }).catch(console.error), 8000);
+          } else {
+            state.pairingRetrying = false;
+            state.pairingError = 'Connection band ho gaya (reason ' + reason + '). Dobara Pairing Code dabao, WiFi par, aur code foran likho.';
+          }
           return;
         }
         if (reason === DisconnectReason.loggedOut) {
@@ -134,6 +155,8 @@ async function startBot(phoneNumber, opts = {}) {
       if (state.sock !== sock || myAttempt !== attemptId) return sock;
       try {
         state.lastPairingCode = await sock.requestPairingCode(phoneNumber);
+        codeIssued = true;
+        state.pairingRetrying = false;
         state.pairingStartedAt = Date.now();
         state.botStatus = 'waiting-pairing';
         console.log('Pairing code:', state.lastPairingCode);
