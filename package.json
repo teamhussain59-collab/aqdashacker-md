@@ -1,1 +1,19 @@
-{"dependencies":{"@whiskeysockets/baileys":"6.7.24","axios":"^1.7.2","express":"^4.19.2","pino":"^9.3.2"},"description":"AQDAS HACKER MD BOT - WhatsApp Multi-Device bot with stylish menu, alive, downloaders, auto-react, status-seen, AI chat and a Railway pairing-code website.","engines":{"node":">=20"},"main":"index.js","name":"aqdas-hacker-md-bot","scripts":{"start":"node index.js"},"type":"commonjs","version":"1.0.0"}
+{
+  "dependencies": {
+    "@whiskeysockets/baileys": "7.0.0-rc14",
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "pino": "^9.3.2"
+  },
+  "description": "AQDAS HACKER MD BOT - WhatsApp Multi-Device bot with stylish menu, alive, downloaders, auto-react, status-seen, AI chat and a Railway pairing-code website.",
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "index.js",
+  "name": "aqdas-hacker-md-bot-baileys7-test",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "type": "commonjs",
+  "version": "1.0.0"
+}
